@@ -44,6 +44,8 @@ print(time.time()-start_time)
 #Alaska with water
 
 start_time = time.time()
+uniform_matching(AK)
+print(time.time()-start_time)
 
 AK = nx.Graph(np.matrix([[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
