@@ -211,6 +211,114 @@ def select_edge(H,slow=True):
     return random.choice(elist)
 """       
 
+
+def select_edge_leaves(H,slow=True):
+    
+    #print("new call")
+    
+    G2=H.copy()
+    
+    ccs = list((G2.subgraph(c) for c in nx.connected_components(G2)))
+    
+    #print(len(ccs))
+
+    edges=[]
+    adds2 = [[None,0]]
+    rsum=0    
+    for cc in ccs:
+        
+        
+        G=cc.copy()
+        
+        
+        if len(list(G.nodes())) == 1:
+           break
+        
+        #match_all = FKT((nx.adjacency_matrix(G)).todense())
+        
+        #if match_all == 0:
+        #    break
+        
+        #print("did all")
+        
+
+        
+
+        
+        elist = list(G.edges())
+        #print(len(elist))
+        
+        temp=0
+
+        for edge in elist:
+            #G.remove_edge(edge[0],edge[1])
+            G.remove_nodes_from([edge[0],edge[1]])
+            #print("edge",edge)
+            C=[G.subgraph(c) for c in nx.connected_components(G)]
+            
+           
+            
+            compprod = 1
+            for comp in C:
+                
+                if len(list(comp.nodes())) %2 == 1:
+                    compprod = 0
+                    break
+                else:
+                    compprod = compprod * FKT((nx.adjacency_matrix(comp)).todense())
+                    
+                   
+            #if compprod == match_all:
+            #    #edges.append(edge)
+            #    rsum += compprod
+            #    
+            #    adds2.append([edge,rsum])
+            #    
+            #else:
+            #
+            #
+            #   rsum += compprod
+                
+            #    adds2.append([edge,rsum])
+            
+            if not C:
+                #rsum+= match_all
+                #adds2.append([edge,rsum])
+                return(edge)
+                
+            #elif compprod == match_all:
+            #    return(edge)
+                
+            elif compprod > 0:
+                rsum += compprod
+                adds2.append([edge,rsum])
+            
+            #print(edge,compprod)
+    
+                #for i in range(compprod):
+                #    adds.append(edge)
+                
+            
+            
+            #print(adds)
+            #probs.append(probs[-1]+compprod/match_all)
+            #probs.append(probs[-1]+compprod)
+            #G.add_edge(edge[0],edge[1])
+            G=cc.copy()
+    #print(adds2)            
+    r = random.randint(1,math.ceil(rsum))
+    #r=random.random()*rsum + 1
+
+    #print("r",r)
+    
+    for x in range(len(adds2)-1):
+        if adds2[x+1][1]>=r and adds2[x][1] < r:
+            #print(adds2[x+1])
+            return adds2[x+1][0]
+     
+
+
+
 def uniform_matching(H):
     
     g=H.copy()
@@ -243,10 +351,10 @@ def uniform_matching(H):
         
         
         
-        plt.figure()
+        #plt.figure()
         #nx.draw(H,pos={x:x for x in H.nodes()},node_color=['r' for x in H.nodes()])
-        nx.draw(g,pos={x:x for x in g.nodes()})
-        plt.show()
+        #nx.draw(g,pos={x:x for x in g.nodes()})
+        #plt.show()
         
     
     return mlist
