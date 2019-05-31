@@ -359,6 +359,39 @@ def uniform_matching(H):
     
     return mlist
     
+def uniform_cycle_cover(H, two_cycles = False):
+    g = H.copy()
+    
+    m1 = uniform_matching(g)
+    
+    D = nx.DiGraph()
+    
+    for x in m1:
+        if (x[0][0]+x[0][1])%2 == 0:
+            D.add_edge(x[0],x[1])
+        else:
+            D.add_edge(x[1],x[0])
+            
+    g= H.copy()
+            
+    if two_cycles == False:
+            
+        g.remove_edges_from(m1)
+    
+    m2 = uniform_matching(g)
+    
+    for x in m2:
+        if (x[0][0]+x[0][1])%2 == 1:
+            D.add_edge(x[0],x[1])
+        else:
+            D.add_edge(x[1],x[0])
+            
+    
+    return D
     
     
-#FKT(nx.adjacency_matrix(nx.grid_graph([2,2])).todense())
+
+    
+dg = uniform_cycle_cover(nx.grid_graph([8,8]))
+
+dg = uniform_cycle_cover(nx.grid_graph([8,8]))
